@@ -1,15 +1,17 @@
 const mongoose = require('mongoose')
 
-mongoose.connect('mongodb://localhost/playground')
+mongoose.connect('mongodb://localhost/mongo-exercises')
     .then(() => console.log('Connected to Mongodb...'))
     .catch(err => console.log("Could not connect to Mongodb", err));
 
 const courseSchema = new mongoose.Schema({
-    name:String,
-    author:String,
+    // _id: String,
+    name: String,
+    author: String,
     tags: [ String ],
     date: { type:Date, default:Date.now },
-    isPublished: Boolean
+    isPublished: Boolean,
+    price: Number
 
 });
 
@@ -47,7 +49,35 @@ async function getCourses(){
     console.log(courses);
 }
 
-getCourses();
+async function updateCourse(id){
+    // Approach: Query First
+    // findById()
+    // Modify it's properties
+    // save()
+
+    // const course = await Course.findById(id);
+    // if (!course) return;
+    // course.isPublished = true;
+    // course.author = 'Another Author';
+    // const result = await course.save();
+    // console.log(result);
+
+    // Approach: Update First
+    // Update directly
+    // Optionally: get the updated document
+
+    const course = await Course.findByIdAndUpdate( id, {
+        $set:{
+            author:"Samira",
+            isPublished:false
+        }
+    },
+    { new:true }
+    );
+    console.log(course);
+
+}
+
+// getCourses();
 // createCourse();
-
-
+updateCourse('5e32c6eb3a48ac582d4cfbf7');
